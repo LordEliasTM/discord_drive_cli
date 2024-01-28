@@ -1,2 +1,1 @@
-# discord_drive_cli
-Abusing discord as cloud-like filehost
+A sample command-line application providing basic argument parsing with an entrypoint in `bin/`.
