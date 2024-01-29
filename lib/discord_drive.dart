@@ -14,10 +14,9 @@ class DiscordDrive {
     this.rootIndexMessageId = Snowflake(rootIndexMessageId);
   }
 
-  Future<DiscordDrive> connect(String token) async {
+  void connect(String token) async {
     client = await Nyxx.connectRest(token);
     index = DiscordDriveIndexManager(client, indexChannelId, rootIndexMessageId);
-    return this;
   }
 
   Future<void> debugDontUse() async {}
