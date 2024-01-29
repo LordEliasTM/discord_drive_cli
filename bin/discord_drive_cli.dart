@@ -1,61 +1,41 @@
-import 'package:args/args.dart';
+import 'dart:io';
+
+import 'package:args/command_runner.dart';
+import 'package:discord_drive_cli/discord_drive.dart';
 
 const String version = '0.0.1';
 
-ArgParser buildParser() {
-  return ArgParser()
-    ..addFlag(
-      'help',
-      abbr: 'h',
-      negatable: false,
-      help: 'Print this usage information.',
-    )
-    ..addFlag(
-      'verbose',
-      abbr: 'v',
-      negatable: false,
-      help: 'Show additional command output.',
-    )
-    ..addFlag(
-      'version',
-      negatable: false,
-      help: 'Print the tool version.',
-    );
+void main(List<String> arguments) async {
+  CommandRunner runner = CommandRunner("discordDrive", "Discord Drive")..addCommand(FirstUseInitCommand());
+  runner.run(arguments);
 }
 
-void printUsage(ArgParser argParser) {
-  print('Usage: dart discord_drive_cli.dart <flags> [arguments]');
-  print(argParser.usage);
-}
+class FirstUseInitCommand extends Command {
+  @override
+  final name = "firstuse";
+  @override
+  final description = "Creates category and required channels in provided guild. Saves result into .env file.";
 
-void main(List<String> arguments) {
-  final ArgParser argParser = buildParser();
-  try {
-    final ArgResults results = argParser.parse(arguments);
-    bool verbose = false;
+  String get guildId => argResults!.rest[0];
+  String get token => argResults!.rest[1];
 
-    // Process the parsed arguments.
-    if (results.wasParsed('help')) {
-      printUsage(argParser);
-      return;
-    }
-    if (results.wasParsed('version')) {
-      print('discord_drive_cli version: $version');
-      return;
-    }
-    if (results.wasParsed('verbose')) {
-      verbose = true;
-    }
+  FirstUseInitCommand();
 
-    // Act on the arguments provided.
-    print('Positional arguments: ${results.rest}');
-    if (verbose) {
-      print('[VERBOSE] All arguments: ${results.arguments}');
-    }
-  } on FormatException catch (e) {
-    // Print usage information if an invalid argument was provided.
-    print(e.message);
-    print('');
-    printUsage(argParser);
+  @override
+  Future<void> run() async {
+    print("creating channels");
+
+    var (driveChannelId, indexChannelId, rootIndexMessageId) =
+        await DiscordDrive.firstUseInit(int.parse(guildId), token);
+
+    print("saving .env");
+
+    var file = await File(".env").create();
+    file.writeAsString("""
+DRIVE_CHANNEL_ID = "$driveChannelId"
+INDEX_CHANNEL_ID = "$indexChannelId"
+ROOT_INDEX_MESSAGE_ID = "$rootIndexMessageId"
+BOT_TOKEN = "$token"
+""");
   }
 }
