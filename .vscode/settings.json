@@ -1,0 +1,26 @@
+{
+  "[dart]": {
+      "editor.defaultFormatter": "Dart-Code.dart-code",
+      "editor.formatOnSave": true,
+      "editor.formatOnType": true,
+      /*"editor.rulers": [
+      80
+      ],*/
+      "editor.selectionHighlight": false,
+      "editor.suggest.snippetsPreventQuickSuggestions": false,
+      "editor.suggestSelection": "first",
+      "editor.tabCompletion": "onlySnippets",
+      "editor.wordBasedSuggestions": "off",
+      "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+      }
+  },
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  "dart.renameFilesWithClasses": "prompt",
+  "dart.lineLength": 999,
+  "dart.debugExternalPackageLibraries": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true
+}
