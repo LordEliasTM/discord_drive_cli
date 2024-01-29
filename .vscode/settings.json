@@ -19,8 +19,9 @@
   "dart.previewFlutterUiGuides": true,
   "dart.previewFlutterUiGuidesCustomTracking": true,
   "dart.renameFilesWithClasses": "prompt",
-  "dart.lineLength": 999,
+  "dart.lineLength": 120,
   "dart.debugExternalPackageLibraries": true,
   "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": true
+  "dotenv.enableAutocloaking": false,
+  //"editor.guides.bracketPairs": true
 }
