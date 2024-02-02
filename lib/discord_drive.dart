@@ -8,10 +8,10 @@ class DiscordDrive {
   late final Snowflake rootIndexMessageId;
   late final DiscordDriveIndexManager index;
 
-  DiscordDrive(int driveChannelId, int indexChannelId, int rootIndexMessageId) {
-    this.driveChannelId = Snowflake(driveChannelId);
-    this.indexChannelId = Snowflake(indexChannelId);
-    this.rootIndexMessageId = Snowflake(rootIndexMessageId);
+  DiscordDrive(String driveChannelId, String indexChannelId, String rootIndexMessageId) {
+    this.driveChannelId = Snowflake.parse(driveChannelId);
+    this.indexChannelId = Snowflake.parse(indexChannelId);
+    this.rootIndexMessageId = Snowflake.parse(rootIndexMessageId);
   }
 
   Future<DiscordDrive> connect(String token) async {

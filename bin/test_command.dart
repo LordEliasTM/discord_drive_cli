@@ -11,10 +11,10 @@ class TestCommand extends Command {
 
   @override
   Future<void> run() async {
-    var driveChannelId = int.parse(env["DRIVE_CHANNEL_ID"]);
-    var indexChannelId = int.parse(env["INDEX_CHANNEL_ID"]);
-    var rootIndexMessageId = int.parse(env["ROOT_INDEX_MESSAGE_ID"]);
-    var botToken = env["BOT_TOKEN"];
+    String driveChannelId = env["DRIVE_CHANNEL_ID"];
+    String indexChannelId = env["INDEX_CHANNEL_ID"];
+    String rootIndexMessageId = env["ROOT_INDEX_MESSAGE_ID"];
+    String botToken = env["BOT_TOKEN"];
 
     var drive = await DiscordDrive(driveChannelId, indexChannelId, rootIndexMessageId).connect(botToken);
 
