@@ -15,8 +15,6 @@ class DiscordDriveIndexManager {
   PartialMessage get _rootIndexMessage => _indexChannel.messages[rootIndexMessageId];
 
   Future<void> writeIndex(FolderIndex index) async {
-    print("writing to index");
-
     var data = IndexBinaryEncoder(index: index).encodeIndex();
     print(data);
     var overMessageSizeLimit = data.length > 4000;
@@ -31,8 +29,6 @@ class DiscordDriveIndexManager {
   }
 
   Future<FolderIndex> readIndex() async {
-    print("reading index");
-
     var msg = (await _rootIndexMessage.fetch()).content;
     var overMessageSizeLimit = msg[0] == "#";
 
