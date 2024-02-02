@@ -14,14 +14,15 @@ class DiscordDrive {
     this.rootIndexMessageId = Snowflake(rootIndexMessageId);
   }
 
-  void connect(String token) async {
+  Future<DiscordDrive> connect(String token) async {
     client = await Nyxx.connectRest(token);
     index = DiscordDriveIndexManager(client, indexChannelId, rootIndexMessageId);
+    return this;
   }
 
   Future<void> debugDontUse() async {}
 
-  /// (int driveChannelId, int indexChannelId, int rootIndexMessageId)
+  /// returns (int driveChannelId, int indexChannelId, int rootIndexMessageId)
   static Future<(int, int, int)> firstUseInit(int guildId, String token) async {
     var client = await Nyxx.connectRest(token);
     var guild = client.guilds[Snowflake(guildId)];
