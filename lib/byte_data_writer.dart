@@ -21,7 +21,11 @@ class ByteDataWriter {
   void writeFloat32(double value) => data.addAll(Uint8List(4)..buffer.asFloat32List()[0] = value);
   void writeFloat64(double value) => data.addAll(Uint8List(8)..buffer.asFloat64List()[0] = value);
 
-  void writeString(String str) => data.addAll(_utf8encoder.convert(str));
+  void writeString(String str, {prependDataLength = true}) {
+    var bytes = _utf8encoder.convert(str);
+    if (prependDataLength) writeUint8(bytes.length);
+    data.addAll(bytes);
+  }
 
   void writeBit8Array(List<bool> bits) {
     int byte = 0;
