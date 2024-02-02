@@ -96,7 +96,7 @@ class ByteDataReader {
 
     for (int i = 0; i < 8; i++) {
       flags.add(
-        (value & (1 << 7 - i)) != 0,
+        (value & (1 << (7 - i))) != 0,
       );
     }
 
