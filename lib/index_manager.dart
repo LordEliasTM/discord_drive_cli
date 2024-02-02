@@ -16,7 +16,6 @@ class DiscordDriveIndexManager {
 
   Future<void> writeIndex(FolderIndex index) async {
     var data = IndexBinaryEncoder(index: index).encodeIndex();
-    print(data);
     var overMessageSizeLimit = data.length > 4000;
 
     if (!overMessageSizeLimit) {
