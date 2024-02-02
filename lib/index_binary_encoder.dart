@@ -9,21 +9,20 @@ class IndexBinaryEncoder extends ByteDataWriter {
   List<int> encodeIndex() {
     writeUint8(index.version);
     writeUint64(index.lastEdit);
-    writeUint64(index.next);
 
-    for (var entry in index.entries) {
-      if (entry is FileEntry) {
-        // isDirectory, reserved...
-        writeBit8Array([false, false, false, false, false, false, false, false]);
-        writeUint64(entry.chunkMessageId);
-      }
-      if (entry is FolderEntry) {
-        // isDirectory, reserved...
-        writeBit8Array([true, false, false, false, false, false, false, false]);
-        writeUint64(entry.indexMessageId);
-      }
-      writeUint8(entry.nameLength);
-      writeString(entry.name);
+    for (var file in index.files) {
+      // isDirectory, reserved...
+      writeBit8Array([false, false, false, false, false, false, false, false]);
+      writeUint64(file.chunkMessageId);
+      writeUint64(file.size);
+      writeString(file.name, prependDataLength: true);
+    }
+
+    for (var folder in index.folders) {
+      // isDirectory, reserved...
+      writeBit8Array([true, false, false, false, false, false, false, false]);
+      writeUint64(folder.indexMessageId);
+      writeString(folder.name, prependDataLength: true);
     }
 
     return data;

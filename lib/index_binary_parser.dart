@@ -7,27 +7,27 @@ class IndexBinaryParser extends ByteDataReader {
   FolderIndex parseIndex() {
     final int version = readUint8();
     final int lastEditTimestamp = readUint64();
-    final int next = readUint64();
-    final List<Entry> entries = <Entry>[];
+    final List<FileEntry> files = <FileEntry>[];
+    final List<FolderEntry> folders = <FolderEntry>[];
 
     while (!finished) {
       final List<bool> flags = readBit8Array();
       final bool isDirectory = flags[0];
       final int messageId = readUint64();
+      final int fileSize = isDirectory ? 0 : readUint64();
       final int nameLength = readUint8();
       final String name = readString(nameLength);
 
       if (isDirectory) {
-        entries.add(FolderEntry(
-          indexMessageId: messageId,
-          nameLength: nameLength,
+        folders.add(FolderEntry(
           name: name,
+          indexMessageId: messageId,
         ));
       } else {
-        entries.add(FileEntry(
-          chunkMessageId: messageId,
-          nameLength: nameLength,
+        files.add(FileEntry(
           name: name,
+          chunkMessageId: messageId,
+          size: fileSize,
         ));
       }
     }
@@ -35,8 +35,8 @@ class IndexBinaryParser extends ByteDataReader {
     return FolderIndex(
       version: version,
       lastEdit: lastEditTimestamp,
-      next: next,
-      entries: entries,
+      files: files,
+      folders: folders,
     );
   }
 }
