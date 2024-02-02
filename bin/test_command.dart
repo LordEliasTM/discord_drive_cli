@@ -18,24 +18,26 @@ class TestCommand extends Command {
 
     var drive = await DiscordDrive(driveChannelId, indexChannelId, rootIndexMessageId).connect(botToken);
 
+    var lastEdit = DateTime.now().millisecondsSinceEpoch;
     var files = [
-      FileEntry(name: "Test", chunkMessageId: 1201581445228015746, size: 128),
+      FileEntry(name: "Test1", chunkMessageId: 1201581445228015746, size: 255),
+      FileEntry(name: "Test2", chunkMessageId: 1201581445228015746, size: 255),
+      FileEntry(name: "Test3", chunkMessageId: 1201581445228015746, size: 255),
+      FileEntry(name: "Test4", chunkMessageId: 1201581445228015746, size: 255),
+      FileEntry(name: "Test5", chunkMessageId: 1201581445228015746, size: 255),
     ];
-    var index = FolderIndex(version: 1, lastEdit: DateTime.now().millisecondsSinceEpoch, files: files, folders: []);
+    var folders = [
+      FolderEntry(name: "F1", indexMessageId: 1123123),
+      FolderEntry(name: "F2", indexMessageId: 1123123),
+      FolderEntry(name: "F3", indexMessageId: 1123123),
+      FolderEntry(name: "F5", indexMessageId: 1123123),
+      FolderEntry(name: "F9", indexMessageId: 1123123),
+    ];
+    var index = FolderIndex(version: 1, lastEdit: lastEdit, files: files, folders: folders);
 
     await drive.index.writeIndex(index);
 
     var index2 = await drive.index.readIndex();
-    print(index2.version);
-    print(index2.lastEdit);
-    for (var file in index2.files) {
-      print(file.name);
-      print(file.chunkMessageId);
-      print(file.size);
-    }
-    for (var file in index2.folders) {
-      print(file.name);
-      print(file.indexMessageId);
-    }
+    print(index2);
   }
 }
