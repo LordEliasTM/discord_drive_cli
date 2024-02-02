@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:discord_drive_cli/base_discord.dart';
 import 'package:discord_drive_cli/index_binary_encoder.dart';
 import 'package:discord_drive_cli/index_binary_parser.dart';
@@ -16,13 +19,14 @@ class DiscordDriveIndexManager {
 
   Future<void> writeIndex(FolderIndex index) async {
     var data = IndexBinaryEncoder(index: index).encodeIndex();
-    var overMessageSizeLimit = data.length > 4000;
+    var compressed = gzip.encode(data);
+    var overMessageSizeLimit = compressed.length > 4000;
 
     if (!overMessageSizeLimit) {
-      _rootIndexMessage.edit(MessageUpdateBuilder(content: encodeBase256(data)));
+      _rootIndexMessage.edit(MessageUpdateBuilder(content: encodeBase256(compressed)));
     } else {
       var indexFileMessage = await _indexChannel
-          .sendMessage(MessageBuilder(attachments: [AttachmentBuilder(data: data, fileName: "rootIndex")]));
+          .sendMessage(MessageBuilder(attachments: [AttachmentBuilder(data: compressed, fileName: "rootIndex")]));
       _rootIndexMessage.edit(MessageUpdateBuilder(content: "#${indexFileMessage.id}"));
     }
   }
@@ -33,14 +37,16 @@ class DiscordDriveIndexManager {
 
     if (!overMessageSizeLimit) {
       var data = decodeBase256(msg);
-      var index = IndexBinaryParser(data: data).parseIndex();
+      var decompressed = Uint8List.fromList(gzip.decode(data));
+      var index = IndexBinaryParser(data: decompressed).parseIndex();
       return index;
     } else {
       // format is #1201581445228015749, so need to remove hashtag
       var indexFileMessageId = Snowflake.parse(msg.substring(1));
       var indexFileMessage = await _indexChannel.messages.get(indexFileMessageId);
       var data = await indexFileMessage.attachments[0].fetch();
-      var index = IndexBinaryParser(data: data).parseIndex();
+      var decompressed = Uint8List.fromList(gzip.decode(data));
+      var index = IndexBinaryParser(data: decompressed).parseIndex();
       return index;
     }
   }
