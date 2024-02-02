@@ -18,18 +18,24 @@ class TestCommand extends Command {
 
     var drive = await DiscordDrive(driveChannelId, indexChannelId, rootIndexMessageId).connect(botToken);
 
-    var entries = [
-      FileEntry(nameLength: 4, name: "Test", chunkMessageId: 1201581445228015746),
+    var files = [
+      FileEntry(name: "Test", chunkMessageId: 1201581445228015746, size: 128),
     ];
-    var index = FolderIndex(version: 1, lastEdit: DateTime.now().millisecondsSinceEpoch, next: 0, entries: entries);
+    var index = FolderIndex(version: 1, lastEdit: DateTime.now().millisecondsSinceEpoch, files: files, folders: []);
 
     await drive.index.writeIndex(index);
 
     var index2 = await drive.index.readIndex();
     print(index2.version);
     print(index2.lastEdit);
-    for (var element in index2.entries) {
-      print(element.name);
+    for (var file in index2.files) {
+      print(file.name);
+      print(file.chunkMessageId);
+      print(file.size);
+    }
+    for (var file in index2.folders) {
+      print(file.name);
+      print(file.indexMessageId);
     }
   }
 }
