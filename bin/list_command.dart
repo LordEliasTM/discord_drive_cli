@@ -10,9 +10,15 @@ class ListCommand extends Command {
 
   @override
   Future<void> run() async {
-    var drive = DiscordDrive(env["DRIVE_CHANNEL_ID"], env["INDEX_CHANNEL_ID"], env["ROOT_INDEX_MESSAGE_ID"])
-      ..connect(env["BOT_TOKEN"]);
+    String driveChannelId = env["DRIVE_CHANNEL_ID"];
+    String indexChannelId = env["INDEX_CHANNEL_ID"];
+    String rootIndexMessageId = env["ROOT_INDEX_MESSAGE_ID"];
+    String botToken = env["BOT_TOKEN"];
 
-    // TODO
+    var drive = await DiscordDrive(driveChannelId, indexChannelId, rootIndexMessageId).connect(botToken);
+
+    var index = await drive.index.readIndex();
+
+    print(index);
   }
 }
