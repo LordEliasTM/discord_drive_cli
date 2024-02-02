@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class ByteDataWriter {
-  late final List<int> data;
+  late final List<int> data = <int>[];
 
   final Utf8Encoder _utf8encoder = const Utf8Encoder();
 

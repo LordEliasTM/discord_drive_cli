@@ -2,13 +2,11 @@ import 'package:discord_drive_cli/byte_data_writer.dart';
 import 'package:discord_drive_cli/index_types.dart';
 
 class IndexBinaryEncoder extends ByteDataWriter {
-  IndexBinaryEncoder({required this.index}) {
-    super.data = <int>[];
-  }
+  IndexBinaryEncoder({required this.index});
 
   final FolderIndex index;
 
-  List<int> encode() {
+  List<int> encodeIndex() {
     writeUint8(index.version);
     writeUint64(index.lastEdit);
     writeUint64(index.next);
