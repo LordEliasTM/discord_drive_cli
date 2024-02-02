@@ -10,18 +10,6 @@ class FolderIndex {
   final int lastEdit;
   final List<FileEntry> files;
   final List<FolderEntry> folders;
-
-  @override
-  String toString() {
-    String result = "";
-    for (var folder in folders) {
-      result += "📁 ${folder.name}\n";
-    }
-    for (var file in files) {
-      result += "📄 ${file.name}\n";
-    }
-    return result;
-  }
 }
 
 class FileEntry {

@@ -19,6 +19,14 @@ class ListCommand extends Command {
 
     var index = await drive.index.readIndex();
 
-    print(index);
+    String result = "";
+    for (var folder in index.folders) {
+      result += "📁 ${folder.name}\n";
+    }
+    for (var file in index.files) {
+      result += "📄 ${file.name}\n";
+    }
+
+    print(result);
   }
 }
