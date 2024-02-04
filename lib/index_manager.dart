@@ -1,7 +1,6 @@
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:discord_drive_cli/base_discord.dart';
+import 'package:discord_drive_cli/discord_data.dart';
 import 'package:discord_drive_cli/index_binary_encoder.dart';
 import 'package:discord_drive_cli/index_binary_parser.dart';
 import 'package:discord_drive_cli/index_types.dart';
@@ -14,40 +13,35 @@ class DiscordDriveIndexManager {
 
   DiscordDriveIndexManager(this.client, this.indexChannelId, this.rootIndexMessageId);
 
+  late final DiscordData discordData = DiscordData(_indexChannel);
+
   PartialTextChannel get _indexChannel => client.channels[indexChannelId] as PartialTextChannel;
   PartialMessage get _rootIndexMessage => _indexChannel.messages[rootIndexMessageId];
 
   Future<void> writeIndex(FolderIndex index) async {
-    var data = IndexBinaryEncoder(index: index).encodeIndex();
-    var compressed = gzip.encode(data);
-    var overMessageSizeLimit = compressed.length > 4000;
+    final data = IndexBinaryEncoder(index: index).encodeIndex();
 
-    if (!overMessageSizeLimit) {
-      _rootIndexMessage.edit(MessageUpdateBuilder(content: encodeBase256(compressed)));
-    } else {
-      var indexFileMessage = await _indexChannel
-          .sendMessage(MessageBuilder(attachments: [AttachmentBuilder(data: compressed, fileName: "rootIndex")]));
-      _rootIndexMessage.edit(MessageUpdateBuilder(content: "#${indexFileMessage.id}"));
-    }
+    await discordData.writeDataToDiscord(data, _rootIndexMessage);
   }
 
   Future<FolderIndex> readIndex() async {
-    var msg = (await _rootIndexMessage.fetch()).content;
-    var overMessageSizeLimit = msg[0] == "#";
+    final data = await discordData.readDataFromDiscord(_rootIndexMessage);
 
-    if (!overMessageSizeLimit) {
-      var data = decodeBase256(msg);
-      var decompressed = Uint8List.fromList(gzip.decode(data));
-      var index = IndexBinaryParser(data: decompressed).parseIndex();
-      return index;
-    } else {
-      // format is #1201581445228015749, so need to remove hashtag
-      var indexFileMessageId = Snowflake.parse(msg.substring(1));
-      var indexFileMessage = await _indexChannel.messages.get(indexFileMessageId);
-      var data = await indexFileMessage.attachments[0].fetch();
-      var decompressed = Uint8List.fromList(gzip.decode(data));
-      var index = IndexBinaryParser(data: decompressed).parseIndex();
-      return index;
-    }
+    var index = IndexBinaryParser(data: data).parseIndex();
+
+    return index;
   }
+
+  _convertUint64ListToUint8List(List<int> data) => Uint64List.fromList(data).buffer.asUint8List();
+
+  /*Future<void> addFileToIndex(List<int> chunkIds, String name, int size) async {
+    final data = _convertUint64ListToUint8List(chunkIds);
+    //final compressed = Uint8List.fromList(gzip.encode(data));
+    final attachments = [AttachmentBuilder(data: data, fileName: "${name}_index")];
+    final chunkIndexMessage = await _indexChannel.sendMessage(MessageBuilder(attachments: attachments));
+
+    final file = FileEntry(name: name, chunkIndexMessageId: chunkIndexMessage.id.value, size: size);
+  }
+
+  Future<void> _addFileToIndex() {}*/
 }

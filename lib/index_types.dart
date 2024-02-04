@@ -15,12 +15,12 @@ class FolderIndex {
 class FileEntry {
   const FileEntry({
     required this.name,
-    required this.chunkMessageId,
+    required this.chunkIndexMessageId,
     required this.size,
   });
 
   final String name;
-  final int chunkMessageId;
+  final int chunkIndexMessageId;
   final int size;
 }
 

@@ -26,7 +26,7 @@ class IndexBinaryParser extends ByteDataReader {
       } else {
         files.add(FileEntry(
           name: name,
-          chunkMessageId: messageId,
+          chunkIndexMessageId: messageId,
           size: fileSize,
         ));
       }
