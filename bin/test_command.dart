@@ -18,6 +18,7 @@ Future<void> testCommand() async {
     FileEntry(name: "cha", chunkIndexMessageId: 1201581445228015746, size: 255),
     FileEntry(name: ":)", chunkIndexMessageId: 1201581445228015746, size: 255),
     FileEntry(name: ":)2", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: "IJBHDVUIJNWUIJUNVIJNSJHSBVIHSBBDVUISDBJN", chunkIndexMessageId: 1201581445228015746, size: 255),
   ];
   var folders = [
     FolderEntry(name: "Noug", indexMessageId: 1123123),
