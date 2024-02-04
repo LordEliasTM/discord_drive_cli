@@ -12,23 +12,22 @@ Future<void> testCommand() async {
 
   var lastEdit = DateTime.now().millisecondsSinceEpoch;
   var files = [
-    FileEntry(name: "Test1", chunkIndexMessageId: 1201581445228015746, size: 255),
-    FileEntry(name: "Test2", chunkIndexMessageId: 1201581445228015746, size: 255),
-    FileEntry(name: "Test3", chunkIndexMessageId: 1201581445228015746, size: 255),
-    FileEntry(name: "Test4", chunkIndexMessageId: 1201581445228015746, size: 255),
-    FileEntry(name: "Test5", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: "Joe", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: "Mama", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: "Got", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: "cha", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: ":)", chunkIndexMessageId: 1201581445228015746, size: 255),
+    FileEntry(name: ":)2", chunkIndexMessageId: 1201581445228015746, size: 255),
   ];
   var folders = [
-    FolderEntry(name: "F1", indexMessageId: 1123123),
-    FolderEntry(name: "F2", indexMessageId: 1123123),
-    FolderEntry(name: "F3", indexMessageId: 1123123),
-    FolderEntry(name: "F5", indexMessageId: 1123123),
-    FolderEntry(name: "F9", indexMessageId: 1123123),
+    FolderEntry(name: "Noug", indexMessageId: 1123123),
+    FolderEntry(name: "at", indexMessageId: 1123123),
+    FolderEntry(name: "Bal", indexMessageId: 1123123),
+    FolderEntry(name: "lz", indexMessageId: 1123123),
   ];
   var index = FolderIndex(version: 1, lastEdit: lastEdit, files: files, folders: folders);
 
   await drive.index.writeIndex(index);
 
-  var index2 = await drive.index.readIndex();
-  print(index2);
+  print("done");
 }

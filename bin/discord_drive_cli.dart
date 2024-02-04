@@ -10,6 +10,7 @@ const String version = '0.0.1';
 void main(List<String> arguments) async {
   await ShaEnv().load();
 
+  loop:
   while (true) {
     final command = ask(">");
     switch (command) {
@@ -32,6 +33,11 @@ void main(List<String> arguments) async {
       case "upload":
         await uploadCommand();
         break;
+
+      case "q":
+      case "x":
+      case "exit":
+        break loop;
     }
   }
 }
