@@ -13,7 +13,7 @@ class DiscordDriveIndexManager {
 
   DiscordDriveIndexManager(this.client, this.indexChannelId, this.rootIndexMessageId);
 
-  late final DiscordData discordData = DiscordData(_indexChannel);
+  final DiscordData discordData = DiscordData();
 
   PartialTextChannel get _indexChannel => client.channels[indexChannelId] as PartialTextChannel;
   PartialMessage get _rootIndexMessage => _indexChannel.messages[rootIndexMessageId];
