@@ -11,7 +11,10 @@ class DiscordData {
 
   Future<void> writeDataToDiscord(Uint8List data, PartialMessage message, {bool compress = true}) async {
     if (compress) data = Uint8List.fromList(gzip.encode(data));
-    final overMessageSizeLimit = data.length > 4000;
+    final overMessageSizeLimit = data.length > 2000;
+
+    // TODO If previous version of the data was saved as file, delete the old file (perhaps async subroutine to not block)
+    // TODO Or write something that gets all messages in the index channel and checks cross references, basically garbage collector
 
     // if not over limit just put it in the message
     // if over limit upload as file and reference it fromt he message
