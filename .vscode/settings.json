@@ -23,5 +23,8 @@
   "dart.debugExternalPackageLibraries": true,
   "editor.bracketPairColorization.enabled": true,
   "dotenv.enableAutocloaking": false,
+  "cSpell.words": [
+    "Nyxx"
+  ],
   //"editor.guides.bracketPairs": true
 }

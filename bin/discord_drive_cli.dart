@@ -12,31 +12,31 @@ void main(List<String> arguments) async {
 
   loop:
   while (true) {
-    final command = ask(">");
+    final String command = ask('>');
     switch (command) {
-      case "?":
-      case "h":
-      case "help":
+      case '?':
+      case 'h':
+      case 'help':
         // TODO
-        print("TODO");
+        print('TODO');
         break;
 
-      case "ls":
-      case "list":
+      case 'ls':
+      case 'list':
         await listCommand();
         break;
 
-      case "test":
+      case 'test':
         await testCommand();
         break;
 
-      case "upload":
+      case 'upload':
         await uploadCommand();
         break;
 
-      case "q":
-      case "x":
-      case "exit":
+      case 'q':
+      case 'x':
+      case 'exit':
         break loop;
     }
   }

@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class ByteDataWriter {
-  late final List<int> data = <int>[];
+  ByteDataWriter();
+
+  final List<int> data = <int>[];
 
   final Utf8Encoder _utf8encoder = const Utf8Encoder();
 
@@ -21,8 +23,11 @@ class ByteDataWriter {
   void writeFloat32(double value) => data.addAll(Uint8List(4)..buffer.asFloat32List()[0] = value);
   void writeFloat64(double value) => data.addAll(Uint8List(8)..buffer.asFloat64List()[0] = value);
 
-  void writeString(String str, {prependDataLength = true}) {
-    var bytes = _utf8encoder.convert(str);
+  void writeString(
+    String str, {
+    bool prependDataLength = true,
+  }) {
+    final Uint8List bytes = _utf8encoder.convert(str);
     if (prependDataLength) writeUint8(bytes.length);
     data.addAll(bytes);
   }

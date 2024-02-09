@@ -7,32 +7,35 @@ import 'package:discord_drive_cli/index_types.dart';
 import 'package:nyxx/nyxx.dart';
 
 class DiscordDriveIndexManager {
+  DiscordDriveIndexManager({
+    required this.client,
+    required this.indexChannelId,
+    required this.rootIndexMessageId,
+  });
+
   final NyxxRest client;
   final Snowflake indexChannelId;
   final Snowflake rootIndexMessageId;
-
-  DiscordDriveIndexManager(this.client, this.indexChannelId, this.rootIndexMessageId);
-
   final DiscordData discordData = DiscordData();
 
   PartialTextChannel get _indexChannel => client.channels[indexChannelId] as PartialTextChannel;
   PartialMessage get _rootIndexMessage => _indexChannel.messages[rootIndexMessageId];
 
   Future<void> writeIndex(FolderIndex index) async {
-    final data = IndexBinaryEncoder(index: index).encodeIndex();
+    final Uint8List data = IndexBinaryEncoder(index: index).encodeIndex();
 
     await discordData.writeDataToDiscord(data, _rootIndexMessage);
   }
 
   Future<FolderIndex> readIndex() async {
-    final data = await discordData.readDataFromDiscord(_rootIndexMessage);
+    final Uint8List data = await discordData.readDataFromDiscord(_rootIndexMessage);
 
-    var index = IndexBinaryParser(data: data).parseIndex();
+    final FolderIndex index = IndexBinaryParser(data: data).parseIndex();
 
     return index;
   }
 
-  _convertUint64ListToUint8List(List<int> data) => Uint64List.fromList(data).buffer.asUint8List();
+  Uint8List _convertUint64ListToUint8List(List<int> data) => Uint64List.fromList(data).buffer.asUint8List();
 
   /*Future<void> addFileToIndex(List<int> chunkIds, String name, int size) async {
     final data = _convertUint64ListToUint8List(chunkIds);
