@@ -2,7 +2,9 @@ import 'package:discord_drive_cli/byte_data_reader.dart';
 import 'package:discord_drive_cli/index_types.dart';
 
 class IndexBinaryParser extends ByteDataReader {
-  IndexBinaryParser({required super.data});
+  IndexBinaryParser({
+    required super.data,
+  });
 
   FolderIndex parseIndex() {
     final int version = readUint8();

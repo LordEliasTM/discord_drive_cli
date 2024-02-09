@@ -5,5 +5,5 @@ String encodeBase256(List<int> data) {
 }
 
 Uint8List decodeBase256(String str) {
-  return Uint8List.fromList(str.codeUnits.map((e) => e - 192).toList());
+  return Uint8List.fromList(str.codeUnits.map((int e) => e - 192).toList());
 }
